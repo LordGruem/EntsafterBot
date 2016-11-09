@@ -14,7 +14,8 @@
   "dependencies": {
     "discord.js": "^10.0.1",
     "node-opus": "^0.2.4",
-    "opusscript": "^0.0.1"
+    "opusscript": "^0.0.1",
+	"youtube-audio-stream": "0.0.28"
   },
   "devDependencies": {}
 }
