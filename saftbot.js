@@ -2,6 +2,9 @@
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const PORT = 80; 
+
+var http = require('http');
 
 var admins = [];
 
@@ -16,6 +19,19 @@ var lineReader = require("readline").createInterface({
 lineReader.on("line", function (line) {
 	admins.push(line);
 });
+
+//USELESS HTTP STUFF
+var server = http.createServer(handleRequest);
+
+//USELESS HTTP STUFF
+server.listen(PORT, function(){
+    //console.log("Server listening on: http://localhost:%s", PORT);
+});
+
+//USELESS HTTP STUFF
+function handleRequest(request, response){
+    response.end('It Works!! Path Hit: ' + request.url);
+}
 
 function isAdmin(name)
 {
