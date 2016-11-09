@@ -4,7 +4,7 @@
   "description": "Offizieller Saftladen Bot",
   "main": "saftbot.js",
   "scripts": {
-    "start": "node saftbot.js"
+    "start": "node --use_strict saftbot.js"
   },
   "author": "",
   "license": "ISC",
