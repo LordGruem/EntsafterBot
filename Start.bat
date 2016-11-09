@@ -1,0 +1,2 @@
+node SaftBot.js
+pause
