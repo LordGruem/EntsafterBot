@@ -171,6 +171,9 @@ client.on('message', message => {
 		
 		if (splitmessage[0] == "!youtube")
 		{
+			message.channel.sendMessage("!youtube is currently disabled!");
+			return;
+			
 			if (message.member.voiceChannel == null)
 			{
 				message.channel.sendMessage("Error! Please join a voice channel!");
