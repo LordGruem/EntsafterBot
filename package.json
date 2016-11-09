@@ -1,6 +1,17 @@
 {
-"scripts": {
-  "start": "node saftbot.js"
-},
-"main": "saftbot.js"
+  "name": "saftbot",
+  "version": "1.0.0",
+  "description": "Offizieller Saftladen Bot",
+  "main": "saftbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^10.0.1",
+    "node-opus": "^0.2.4",
+    "opusscript": "^0.0.1"
+  },
+  "devDependencies": {}
 }
