@@ -1,0 +1,6 @@
+{
+"scripts": {
+  "start": "node saftbot.js"
+},
+"main": "saftbot.js"
+}
