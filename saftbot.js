@@ -35,11 +35,20 @@ function handleRequest(request, response){
 }
 */
 
-//SETTINGS: (TOO LAZY TO MAKE A PROPER TXT READER):
+//"SETTINGS": (TOO LAZY TO MAKE A PROPER TXT READER):
 var UseOriginalCmds = false;
+var funnyMeme = true;
+var admins = true;
+//if admins is false, this is if normal users can use admin CMDs
+var AllowAdminCmds = false;
 
 function isAdmin(name)
 {
+    if (!admins)
+    {
+        return AllowAdminCmds;
+    }
+
 	return admins.indexOf(name) > -1;
 }
 
@@ -258,13 +267,42 @@ client.on('message', message => {
 		}
 	}
 	
-	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot")
+	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" && isAdmin(message.member.user.username))
 	{
 		var splitmessage = message.content.split(" ");
 		
 		if (splitmessage[0] == "§test")
 		{
 			message.channel.sendMessage("SUCCESS!");
+		}
+
+		if (splitmessage[0] == "§isonly" && funnyMeme)
+		{
+		    if (message.member.voiceChannel == null) {
+		        message.channel.sendMessage("Error! Please join a voice channel!");
+		        return;
+		    }
+
+		    if (splitmessage.lenght != 2 || splitmessage[1] == "game" || splitmessage[1] == "gem") {
+		        message.member.voiceChannel.join().then(connection => {
+		            var dispatcher = connection.playFile("mad(full).mp3");
+
+		            currentDispatcher = dispatcher;
+
+		            dispatcher.setVolume(volume);
+
+		            dispatcher.on("end", () => {
+		                connection.disconnect();
+
+		                currentDispatcher = null;
+		            });
+		        });
+		    }
+		    else
+		    {
+		        message.channel.sendMessage("This function is still WIP, sorry");
+		    }
+		    message.channel.sendMessage("Only- Is only "+splitmessage[1]+", y u heff to be mad");
 		}
 	}
 });
