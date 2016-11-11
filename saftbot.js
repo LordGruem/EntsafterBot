@@ -38,13 +38,13 @@ function handleRequest(request, response){
 //"SETTINGS": (TOO LAZY TO MAKE A PROPER TXT READER):
 var UseOriginalCmds = false;
 var funnyMeme = true;
-var admins = true;
+var enableAdmins = true;
 //if admins is false, this is if normal users can use admin CMDs
 var AllowAdminCmds = false;
 
 function isAdmin(name)
 {
-    if (!admins)
+    if (! enableAdmins)
     {
         return AllowAdminCmds;
     }
