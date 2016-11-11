@@ -36,7 +36,7 @@ function handleRequest(request, response){
 */
 
 //SETTINGS: (TOO LAZY TO MAKE A PROPER TXT READER):
-var UseOriginalCmds = False;
+var UseOriginalCmds = false;
 
 function isAdmin(name)
 {
