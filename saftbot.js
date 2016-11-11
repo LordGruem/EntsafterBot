@@ -35,6 +35,9 @@ function handleRequest(request, response){
 }
 */
 
+//SETTINGS: (TOO LAZY TO MAKE A PROPER TXT READER):
+var UseOriginalCmds = False;
+
 function isAdmin(name)
 {
 	return admins.indexOf(name) > -1;
@@ -60,7 +63,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-	if (message.content.startsWith("!") && message.member.user.username != "Saft Bot")
+	if (message.content.startsWith("!") && message.member.user.username != "Saft Bot" && UseOriginalCmds)
 	{
 		var splitmessage = message.content.split(" ");
 		
@@ -252,6 +255,16 @@ client.on('message', message => {
 			!johncena          - Play the John Cena theme \n\
 			!youtube [link]    - Play a Youtube video \n\
 			!setvolume [value] - Set volume for sounds");
+		}
+	}
+	
+	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot")
+	{
+		var splitmessage = message.content.split(" ");
+		
+		if (splitmessage[0] == "§test")
+		{
+			message.channel.sendMessage("SUCCESS!");
 		}
 	}
 });
