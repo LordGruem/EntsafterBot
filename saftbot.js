@@ -17,7 +17,7 @@ var lineReader = require("readline").createInterface({
 });
 
 lineReader.on("line", function (line) {
-	admins.push(line);
+    admins.push(line);
 });
 
 /*
@@ -38,13 +38,13 @@ function handleRequest(request, response){
 //"SETTINGS": (TOO LAZY TO MAKE A PROPER TXT READER):
 var UseOriginalCmds = false;
 var funnyMeme = true;
-var enableAdmins = true;
+var EnableAdmins = true;
 //if admins is false, this is if normal users can use admin CMDs
 var AllowAdminCmds = false;
 
 function isAdmin(name)
 {
-    if (! enableAdmins)
+    if (! EnableAdmins)
     {
         return AllowAdminCmds;
     }
@@ -267,6 +267,7 @@ client.on('message', message => {
 		}
 	}
 	
+
 	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" && isAdmin(message.member.user.username))
 	{
 		var splitmessage = message.content.split(" ");
@@ -276,14 +277,21 @@ client.on('message', message => {
 			message.channel.sendMessage("SUCCESS!");
 		}
 
-		if (splitmessage[0] == "§isonly" && funnyMeme)
+		if (splitmessage[0] == "§getName")
+		{
+		    message.channel.sendMessage(message.member.user.username);
+		}
+
+		if (splitmessage[0] == "§isonly")
 		{
 		    if (message.member.voiceChannel == null) {
 		        message.channel.sendMessage("Error! Please join a voice channel!");
 		        return;
 		    }
 
-		    if (splitmessage.lenght != 2 || splitmessage[1] == "game" || splitmessage[1] == "gem") {
+		    message.channel.sendMessage(splitmessage[1]+"? I don't get it");
+
+		    if (splitmessage[1] == null || splitmessage[1] == undefined || splitmessage[1] == "game" || splitmessage[1] == "gem") {
 		        message.member.voiceChannel.join().then(connection => {
 		            var dispatcher = connection.playFile("mad(full).mp3");
 
@@ -297,12 +305,14 @@ client.on('message', message => {
 		                currentDispatcher = null;
 		            });
 		        });
+		        message.channel.sendMessage("Only- Is only gem, y u heff to be mad");
 		    }
 		    else
 		    {
 		        message.channel.sendMessage("This function is still WIP, sorry");
+		        message.channel.sendMessage("Only- Is only " + splitmessage[1] + ", y u heff to be mad");
 		    }
-		    message.channel.sendMessage("Only- Is only "+splitmessage[1]+", y u heff to be mad");
+		    
 		}
 	}
 });
