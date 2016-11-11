@@ -1,0 +1,10 @@
+//SETTINGS: lines with // in front are ignored
+//Enable orginal Saftbot
+False
+//Enable Admins:
+True
+//Enable Blacklist:
+True
+//
+//Enable "is only..." meme(currently unfinished)
+False
