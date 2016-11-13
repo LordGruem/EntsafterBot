@@ -269,17 +269,19 @@ client.on('message', message => {
 	
 
 	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" && isAdmin(message.member.user.username)) {
-	    var splitmessage = message.content.split(" ");
+	    splitmessage = message.content.split(" ");
+	    var command = splitmessage[0].toLowerCase();
+	    var args = splitmessage.slice(1, splitmessage.length).join(" ");
 
-	    if (splitmessage[0] == "§test") {
+	    if (command == "§test") {
 	        message.channel.sendMessage("SUCCESS!");
 	    }
 
-	    if (splitmessage[0] == "§getName") {
+	    if (command == "§getname") {
 	        message.channel.sendMessage(message.member.user.username);
 	    }
 
-	    if (splitmessage[0] == "§isonly") {
+	    if (command == "§isonly") {
 	        if (message.member.voiceChannel == null) {
 	            message.channel.sendMessage("Only- Is only Error, y u heff to not join voicechannel");
 	            return;
@@ -287,7 +289,7 @@ client.on('message', message => {
 
 	        //message.channel.sendMessage(splitmessage[1] + "? I don't get it");
 
-	        if (splitmessage[1] == null || splitmessage[1] == "game" || splitmessage[1] == "gem") {
+	        if (args == null || args == "game" || args == "gem") {
 	            message.member.voiceChannel.join().then(connection => {
 	                var dispatcher = connection.playFile("mad(full).mp3");
 
@@ -313,18 +315,18 @@ client.on('message', message => {
 	                dispatcher.setVolume(volume);
 
 	                dispatcher.on("end", () => {
-	                    var msg = new SpeechSynthesisUtterance(splitmessage[1]);
+	                    /* var msg = new SpeechSynthesisUtterance(args);
 
-	                    var dispatcher = connection.speechSynthesis.speak(msg);
+	                    var dispatcher = null;
 
-	                    //var msg = new SpeechSynthesisUtterance('Hello World');
-	                    //window.speechSynthesis.speak(msg);
+	                    var msg = new SpeechSynthesisUtterance('Hello World');
+	                    window.speechSynthesis.speak(msg);
 
 	                    currentDispatcher = dispatcher;
 
 	                    dispatcher.setVolume(volume);
 
-	                    dispatcher.on("end", () => {
+	                    dispatcher.on("end", () => { */
 	                        var dispatcher = connection.playFile("mad(2).mp3");
 
 	                        currentDispatcher = dispatcher;
@@ -338,24 +340,26 @@ client.on('message', message => {
 	                        });
 	                    });
 	                });
-	            });
-	            message.channel.sendMessage("only- It's only", splitmessage[1], "y u heff to be mad?");
+	            //});
+	            message.channel.sendMessage("this is test");
+	            message.channel.sendMessage("only- It's only "+args+" y u heff to be mad?");
 
 	        }
 	    }
 
-	    if (splitmessage[0] == "§square") {
+	    if (command == "§square") {
 	        message.delete();
-	        var fullmsg = splitmessage.slice(1, splitmessage.length).join(" ");
-	        var toSend = fullmsg;
+	        var toSend = args;
 	        var a = 1;
-	        while (a < fullmsg.length)
+	        while (a < args.length)
 	        {
-	            toSend += "\n" + fullmsg[a];
+	            toSend += "\n" + args[a];
 	            a += 1;
 	        }
 	        message.channel.sendMessage(toSend);
 	    }
+
+        if (command == "§mute"){}
 	}
 	
 });
