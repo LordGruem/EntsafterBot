@@ -40,7 +40,7 @@ var UseOriginalCmds = false;
 var funnyMeme = true;
 var EnableAdmins = true;
 //if admins is false, this is if normal users can use admin CMDs
-var AllowAdminCmds = false;
+var AllowAdminCmds = true;
 
 function isAdmin(name)
 {
@@ -268,53 +268,96 @@ client.on('message', message => {
 	}
 	
 
-	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" && isAdmin(message.member.user.username))
-	{
-		var splitmessage = message.content.split(" ");
-		
-		if (splitmessage[0] == "§test")
-		{
-			message.channel.sendMessage("SUCCESS!");
-		}
+	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" && isAdmin(message.member.user.username)) {
+	    var splitmessage = message.content.split(" ");
 
-		if (splitmessage[0] == "§getName")
-		{
-		    message.channel.sendMessage(message.member.user.username);
-		}
+	    if (splitmessage[0] == "§test") {
+	        message.channel.sendMessage("SUCCESS!");
+	    }
 
-		if (splitmessage[0] == "§isonly")
-		{
-		    if (message.member.voiceChannel == null) {
-		        message.channel.sendMessage("Error! Please join a voice channel!");
-		        return;
-		    }
+	    if (splitmessage[0] == "§getName") {
+	        message.channel.sendMessage(message.member.user.username);
+	    }
 
-		    message.channel.sendMessage(splitmessage[1]+"? I don't get it");
+	    if (splitmessage[0] == "§isonly") {
+	        if (message.member.voiceChannel == null) {
+	            message.channel.sendMessage("Error! Please join a voice channel!");
+	            return;
+	        }
 
-		    if (splitmessage[1] == null || splitmessage[1] == undefined || splitmessage[1] == "game" || splitmessage[1] == "gem") {
-		        message.member.voiceChannel.join().then(connection => {
-		            var dispatcher = connection.playFile("mad(full).mp3");
+	        message.channel.sendMessage(splitmessage[1] + "? I don't get it");
 
-		            currentDispatcher = dispatcher;
+	        if (splitmessage[1] == null || splitmessage[1] == "game" || splitmessage[1] == "gem") {
+	            message.member.voiceChannel.join().then(connection => {
+	                var dispatcher = connection.playFile("mad(full).mp3");
 
-		            dispatcher.setVolume(volume);
+	                currentDispatcher = dispatcher;
 
-		            dispatcher.on("end", () => {
-		                connection.disconnect();
+	                dispatcher.setVolume(volume);
 
-		                currentDispatcher = null;
-		            });
-		        });
-		        message.channel.sendMessage("Only- Is only gem, y u heff to be mad");
-		    }
-		    else
-		    {
-		        message.channel.sendMessage("This function is still WIP, sorry");
-		        message.channel.sendMessage("Only- Is only " + splitmessage[1] + ", y u heff to be mad");
-		    }
-		    
-		}
+	                dispatcher.on("end", () => {
+	                    connection.disconnect();
+
+	                    currentDispatcher = null;
+	                });
+	            });
+	            message.channel.sendMessage("Only- Is only gem, y u heff to be mad");
+	        }
+	        else {
+	            message.channel.sendMessage("This function is still WIP, sorry");
+	            message.member.voiceChannel.join().then(connection => {
+	                var dispatcher = connection.playFile("mad(1).mp3");
+
+	                currentDispatcher = dispatcher;
+
+	                dispatcher.setVolume(volume);
+
+	                dispatcher.on("end", () => {
+	                    var msg = new SpeechSynthesisUtterance(splitmessage[1]);
+
+	                    var dispatcher = connection.speechSynthesis.speak(msg);
+
+	                    //var msg = new SpeechSynthesisUtterance('Hello World');
+	                    //window.speechSynthesis.speak(msg);
+
+	                    currentDispatcher = dispatcher;
+
+	                    dispatcher.setVolume(volume);
+
+	                    dispatcher.on("end", () => {
+	                        var dispatcher = connection.playFile("mad(2).mp3");
+
+	                        currentDispatcher = dispatcher;
+
+	                        dispatcher.setVolume(volume);
+
+	                        dispatcher.on("end", () => {
+	                            connection.disconnect();
+
+	                            currentDispatcher = null;
+	                        });
+	                    });
+	                });
+	            });
+	            message.channel.sendMessage("only- It's only", splitmessage[1], "y u heff to be mad?");
+
+	        }
+	    }
+
+	    if (splitmessage[0] == "§square") {
+	        message.delete();
+	        var fullmsg = splitmessage.slice(1, splitmessage.length).join(" ");
+	        var toSend = fullmsg;
+	        var a = 1;
+	        while (a < fullmsg.length)
+	        {
+	            toSend += "\n" + fullmsg[a];
+	            a += 1;
+	        }
+	        message.channel.sendMessage(toSend);
+	    }
 	}
+	
 });
 
 client.login('MjQ1OTU0Njc3MjE5MjYyNDY0.CwTmqg.09WOoLgT6IjMpP4TqsTr32Tb8fY');
