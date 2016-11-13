@@ -281,11 +281,11 @@ client.on('message', message => {
 
 	    if (splitmessage[0] == "§isonly") {
 	        if (message.member.voiceChannel == null) {
-	            message.channel.sendMessage("Error! Please join a voice channel!");
+	            message.channel.sendMessage("Only- Is only Error, y u heff to not join voicechannel");
 	            return;
 	        }
 
-	        message.channel.sendMessage(splitmessage[1] + "? I don't get it");
+	        //message.channel.sendMessage(splitmessage[1] + "? I don't get it");
 
 	        if (splitmessage[1] == null || splitmessage[1] == "game" || splitmessage[1] == "gem") {
 	            message.member.voiceChannel.join().then(connection => {
