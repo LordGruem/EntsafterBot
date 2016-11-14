@@ -21,20 +21,9 @@ lineReader.on("line", function (line)
     admins.push(line);
 });
 
-//"SETTINGS": (TOO LAZY TO MAKE A PROPER .TXT READER):
-var UseOriginalCmds = false;
-var funnyMeme = true;
-var EnableAdmins = true;
-//if admins is false, this is if normal users can use admin CMDs
-var AllowAdminCmds = true;
 
 function isAdmin(name)
 {
-    if (! EnableAdmins)
-    {
-        return AllowAdminCmds;
-    }
-
 	return admins.indexOf(name) > -1;
 }
 
@@ -44,6 +33,7 @@ function saveAdmins()
 	
 	fs.writeFile("admins.txt", admins.join("\r\n"));
 }
+
 
 client.on('ready', () => 
 {
@@ -60,23 +50,46 @@ client.on('ready', () =>
 
 client.on('message', message => 
 {
+    var a = 0;
+    for (a in muted) {
+        if (muted[a] == message.member.user.username)
+        {
+            message.delete();
+            return;
+        }
+    }
+
     if (message.content.startsWith("!") && message.member.user.username != "Saft Bot")
     {
         var splitmessage = message.content.split(" ");
         var command = splitmessage[0].toLowerCase();
         var args = splitmessage.slice(1, splitmessage.length).join(" ");
 		
-        if (UseOriginalCmds) {
-            if (command == "!ping") {
-                message.channel.sendMessage("Pong!");
-            }
-
-            if (command == "!say" && splitmessage.length > 1 && isAdmin(message.member.user.username)) {
+        if (isAdmin(message.member.user.username) && splitmessage.length > 1)
+        {
+            if (command == "!say")
+            {
                 message.delete();
                 message.channel.sendMessage(args);
             }
 
-            if (command == "!addadmin" && splitmessage.length > 1 && isAdmin(message.member.user.username)) {
+            if (command == "!square")
+            {
+                var toSend = args;
+                var a = 1;
+
+                message.delete();
+
+                while (a < args.length) {
+                    toSend += "\n" + args[a];
+                    a += 1;
+                }
+
+                message.channel.sendMessage(toSend);
+            }
+
+            if (command == "!addadmin")
+            {
                 if (isAdmin(args)) {
                     message.channel.sendMessage("**" + args + "** is already admin!");
                     return;
@@ -87,15 +100,16 @@ client.on('message', message =>
                 saveAdmins();
             }
 
-            if (command == "!removeadmin" && splitmessage.length > 1 && isAdmin(message.member.user.username)) {
+            if (command == "!removeadmin")
+            {
                 if (!isAdmin(args)) {
                     message.channel.sendMessage("**" + args + "** is not an admin!");
                     return;
                 }
 
-                message.channel.sendMessage("**" + args + "** is no longer admin!");
+            message.channel.sendMessage("**" + args + "** is no longer admin!");
 
-                var index = admins.indexOf(args);
+            var index = admins.indexOf(args);
 
                 if (index > -1) {
                     admins.splice(index, 1);
@@ -104,7 +118,55 @@ client.on('message', message =>
                 saveAdmins();
             }
 
-            if (command == "!johncena") {
+            if (command == "!mute")
+            {
+                if (muted.indexOf(args) > -1) {
+                    message.channel.sendMessage("**" + args + "** is already muted!");
+                    return;
+                }
+
+                if (args == "Saft Bot") {
+                    message.channel.sendMessage("You can't mute me!");
+                    return;
+                }
+
+                message.channel.sendMessage("**" + args + "** is now muted!");
+                muted.push(args);
+            }
+
+            if (command == "!unmute")
+            {
+                if (muted.indexOf(args) < 0) {
+                    message.channel.sendMessage("**" + args + "** isn't muted!");
+                    return;
+                }
+
+                muted.splice(muted.indexOf(args), 1);
+                message.channel.sendMessage("**" + args + "** is no longer muted!")
+            }
+
+            if (command == "!purge")
+            {
+                var int = parseInt(args, 10);
+
+                if (int < 1 || int > 200)
+                {
+                    message.channel.sendMessage("Die Zahl ist ungueltig");
+                    return;
+                }
+
+                message.channel.bulkDelete(int);
+                message.channel.sendMessage(int, " Messages were deleted");
+            }
+        }
+
+        if (command == "!ping")
+        {
+            message.channel.sendMessage("Pong!");
+        }
+
+        if (command == "!johncena")
+        {
                 if (message.member.voiceChannel == null) {
                     message.channel.sendMessage("Error! Please join a voice channel!");
                     return;
@@ -125,7 +187,8 @@ client.on('message', message =>
                 message.channel.sendMessage("Now playing **JOHN CENA**!");
             }
 
-            if (command == "!iplaypokemongo") {
+        if (command == "!iplaypokemongo")
+        {
                 if (message.member.voiceChannel == null) {
                     message.channel.sendMessage("Error! Please join a voice channel!");
                     return;
@@ -146,7 +209,9 @@ client.on('message', message =>
                 message.channel.sendMessage("Now playing **Pokemon Go Song (FOR KIDS)**!");
             }
 
-            if (command == "!youtube") {
+        /*
+        if (command == "!youtube")
+        {
                 message.channel.sendMessage("!youtube is currently disabled!");
                 return;
 
@@ -175,13 +240,18 @@ client.on('message', message =>
 
                 message.channel.sendMessage("Now playing **" + link + "**!");
             }
+        */
 
-            if (command == "!kill") {
+        /*
+        if (command == "!kill")
+        {
                 message.delete();
                 message.channel.sendMessage("**" + message.member.user.username + "** killed **" + args + "**!");
             }
+        */
 
-            if (command == "!setvolume") {
+        if (command == "!setvolume")
+        {
                 var value = parseFloat(splitmessage[1]);
 
                 if (value == "NaN" || value < 0) {
@@ -198,25 +268,25 @@ client.on('message', message =>
                 message.channel.sendMessage("Volume was set to " + value);
             }
 
-            if (command == "!stop") {
-                if (currentDispatcher != null) {
-                    currentDispatcher.end();
-                }
-
-                currentDispatcher = null;
-
-                message.channel.sendMessage("All sounds were stopped!");
+        if (command == "!stop")
+        {
+            if (currentDispatcher != null) {
+                currentDispatcher.end();
             }
-        }
+
+            currentDispatcher = null;
+
+            message.channel.sendMessage("All sounds were stopped!");
+            }
 
         if (command == "!commands")
         {
             message.channel.sendMessage("Commands: \n\
 			**!kill [target]\n**- Kill somebody \n\
 			**!pokemongosong\n**- Play the Pokemon Go song \n\
-            **!johncena**\n- Play the John Cena theme \n\
-			**!youtube [link]**\n- :spindieplates: [BROKEN] \n\
-			**!setvolume [value]**\n- Set volume for sounds \n\
+            **!johncena**\n- Play the John Cena theme \n\ "
+			//+"**!youtube [link]**\n- :spindieplates: [BROKEN] \n\"
+			+"**!setvolume [value]**\n- Set volume for sounds \n\
             **!getname**\n- Return your name \n\
             **!isonly [noun]**\n- Play the meme [BROKEN] \n\
             **!square [message]**\n- Annoy people \n\
@@ -226,7 +296,8 @@ client.on('message', message =>
             **!removeadmin [target]**\nRemove an admin \n\
             **!listadmins**\n- lists all admins \n\
             **!mute [target]**\n- mute someone \n\
-            **!unmute [target]**\n- unmute someone "
+            **!unmute [target]**\n- unmute someone \n\
+            **!purge [number]**\n- get rid of messages "
             );
         }
 	
@@ -297,70 +368,15 @@ client.on('message', message =>
                 message.channel.sendMessage("only- It's only "+args+" y u heff to be mad?");
             }
         }
-
-        if (command == "!square") 
-        {
-            var toSend = args;
-            var a = 1;
-
-            message.delete();
-
-            while (a < args.length)
-            {
-                toSend += "\n" + args[a];
-                a += 1;
-            }
-
-            message.channel.sendMessage(toSend);
-        }
-
-        if (command == "!mute" && isAdmin(message.member.user.username))
-        {
-            if(muted.indexOf(args) > -1)
-            {
-                message.channel.sendMessage("**"+args + "** is already muted!");
-                return;
-            }
-
-            if (args == "Saft Bot")
-            {
-                message.channel.sendMessage("You can't mute me!");
-                return;
-            }
-
-            message.channel.sendMessage("**" + args + "** is now muted!");
-            muted.push(args);
-        }
-
-        if (command == "!unmute" && isAdmin(message.member.user.username))
-        {
-            if(muted.indexOf(args) < 0)
-            {
-                message.channel.sendMessage("**" + args + "** isn't muted!");
-                return;
-            }
-
-            muted.splice(muted.indexOf(args), 1);
-            message.channel.sendMessage("**"+args+"** is no longer muted!")
-        }
-
+        
         if (command == "!listadmins")
         {
         message.delete;
         message.channel.sendMessage(admins);
-    }
+    	}
 	
     }
 
-    var name = "";
-    for (name in muted)
-    {
-        if( name == message.member.user.username)
-        {
-            message.delete();
-            return;
-        }
-    }
 });
 
 client.login('MjQ1OTU0Njc3MjE5MjYyNDY0.CwTmqg.09WOoLgT6IjMpP4TqsTr32Tb8fY');
