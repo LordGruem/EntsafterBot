@@ -61,52 +61,50 @@ client.on('ready', () =>
 
 client.on('message', message => 
 {
-	if (message.content.startsWith("!") && message.member.user.username != "Saft Bot" && UseOriginalCmds)
+	if (message.content.startsWith("!") && message.member.user.username != "Saft Bot")
 	{
 		var splitmessage = message.content.split(" ");
+	        var command = splitmessage[0].toLowerCase();
+	        var args = splitmessage.slice(1, splitmessage.length).join(" ");
 		
-		if (splitmessage[0] == "!ping")
+                if (command== "!ping")
 		{
 			message.channel.sendMessage("Pong!");
 		}
 		
-		if (splitmessage[0] == "!say" && splitmessage.length > 1 && isAdmin(message.member.user.username))
+		if (command == "!say" && splitmessage.length > 1 && isAdmin(message.member.user.username))
 		{
 			message.delete();
 			
-			message.channel.sendMessage(splitmessage.slice(1, splitmessage.length).join(" "));
+			message.channel.sendMessage(args);
 		}
 		
-		if (splitmessage[0] == "!addadmin" && splitmessage.length > 1 && isAdmin(message.member.user.username))
+		if (command == "!addadmin" && splitmessage.length > 1 && isAdmin(message.member.user.username))
 		{
-			var target = splitmessage.slice(1, splitmessage.length).join(" ");
-			
-			if (isAdmin(target))
+			if (isAdmin(args))
 			{
-				message.channel.sendMessage("**" + target + "** is already admin!");
+				message.channel.sendMessage("**" + args + "** is already admin!");
 				return;
 			}
 			
-			message.channel.sendMessage("**" + target + "** is now admin!");
+			message.channel.sendMessage("**" + args + "** is now admin!");
 			
-			admins.push(target);
+			admins.push(args);
 			
 			saveAdmins();
 		}
 		
-		if (splitmessage[0] == "!removeadmin" && splitmessage.length > 1 && isAdmin(message.member.user.username))
+		if (command == "!removeadmin" && splitmessage.length > 1 && isAdmin(message.member.user.username))
 		{
-			var target = splitmessage.slice(1, splitmessage.length).join(" ");
-			
-			if (!isAdmin(target))
+			if (!isAdmin(args))
 			{
-				message.channel.sendMessage("**" + target + "** is not an admin!");
+				message.channel.sendMessage("**" + args + "** is not an admin!");
 				return;
 			}
 			
-			message.channel.sendMessage("**" + target + "** is no longer admin!");
+			message.channel.sendMessage("**" + args + "** is no longer admin!");
 			
-			var index = admins.indexOf(target);
+			var index = admins.indexOf(args);
 			
 			if (index > -1)
 			{
@@ -116,7 +114,7 @@ client.on('message', message =>
 			saveAdmins();
 		}
 		
-		if (splitmessage[0] == "!johncena")
+		if (command == "!johncena")
 		{
 			if (message.member.voiceChannel == null)
 			{
@@ -143,7 +141,7 @@ client.on('message', message =>
 			message.channel.sendMessage("Now playing **JOHN CENA**!");
 		}
 		
-		if (splitmessage[0] == "!iplaypokemongo")
+		if (command == "!iplaypokemongo")
 		{
 			if (message.member.voiceChannel == null)
 			{
@@ -170,7 +168,7 @@ client.on('message', message =>
 			message.channel.sendMessage("Now playing **Pokemon Go Song (FOR KIDS)**!");
 		}
 		
-		if (splitmessage[0] == "!youtube")
+		if (command == "!youtube")
 		{
 			message.channel.sendMessage("!youtube is currently disabled!");
 			return;
@@ -204,16 +202,14 @@ client.on('message', message =>
 			message.channel.sendMessage("Now playing **" + link +"**!");
 		}
 		
-		if (splitmessage[0] == "!kill")
+		if (command == "!kill")
 		{
-			var target = splitmessage.slice(1, splitmessage.length).join(" ");
-			
 			message.delete();
 			
-			message.channel.sendMessage("**" + message.member.user.username + "** killed **" + target + "**!");
+			message.channel.sendMessage("**"+message.member.user.username+"** killed **"+args+"**!");
 		}
 		
-		if (splitmessage[0] == "!setvolume")
+		if (command == "!setvolume")
 		{
 			var value = parseFloat(splitmessage[1]);
 			
@@ -233,7 +229,7 @@ client.on('message', message =>
 			message.channel.sendMessage("Volume was set to " + value);
 		}
 		
-		if (splitmessage[0] == "!stop")
+		if (command == "!stop")
 		{
 			if (currentDispatcher != null)
 			{
@@ -245,35 +241,30 @@ client.on('message', message =>
 			message.channel.sendMessage("All sounds were stopped!");
 		}
 		
-		if (splitmessage[0] == "!commands")
+		if (command == "!commands")
 		{
 			message.channel.sendMessage("Commands: \n\
 			!kill [target]     - Kill somebody \n\
 			!pokemongosong     - Play the Pokemon Go song \n\
 			!johncena          - Play the John Cena theme \n\
-			!youtube [link]    - Play a Youtube video \n\
-			!setvolume [value] - Set volume for sounds");
+			!youtube [link]    - :spindieplates: [BROKEN] \n\
+			!setvolume [value] - Set volume for sounds \n\
+                        !getname           - Return your name \n\
+                        !isonly [noun]     - Play the meme [BROKEN] \n\
+                        !square [message]  - Annoy people \n\
+                        !mute [target]     - Shut someone up [BROKEN] \n\
+                        !say [message]     - Print a message \n\
+                        !addadmin [target] - Add someone as Admin \n\
+                        !removeadmin [target]Remove an admin \n\");
 		}
-	}
 	
-
-	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" &&                      isAdmin(message.member.user.username)) 
-        {
-	    splitmessage = message.content.split(" ");
-	    var command = splitmessage[0].toLowerCase();
-	    var args = splitmessage.slice(1, splitmessage.length).join(" ");
-
-	    if (command == "§test") 
-            {
-	        message.channel.sendMessage("SUCCESS!");
-	    }
-
-	    if (command == "§getname")
+	
+	    if (command == "!getname")
             {
 	        message.channel.sendMessage(message.member.user.username);
 	    }
 
-	    if (command == "§isonly") 
+	    if (command == "!isonly") 
             {
 	        if (message.member.voiceChannel == null)
                 {
@@ -335,7 +326,7 @@ client.on('message', message =>
 	        }
 	    }
 
-	    if (command == "§square") 
+	    if (command == "!square") 
             {
 	        message.delete();
 	        var toSend = args;
@@ -348,7 +339,7 @@ client.on('message', message =>
 	        message.channel.sendMessage(toSend);
 	    }
 
-        if (command == "§mute")
+        if (command == "!mute")
         {
             //code needed here
         }
