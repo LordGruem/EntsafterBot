@@ -12,30 +12,17 @@ var currentDispatcher = null;
 
 var volume = 1.0;
 
-var lineReader = require("readline").createInterface({
+var lineReader = require("readline").createInterface(
+{
 	input: require("fs").createReadStream("admins.txt")
 });
 
-lineReader.on("line", function (line) {
+lineReader.on("line", function (line) 
+{
     admins.push(line);
 });
 
-/*
-//USELESS HTTP STUFF
-var server = http.createServer(handleRequest);
-
-//USELESS HTTP STUFF
-server.listen(PORT, function(){
-    //console.log("Server listening on: http://localhost:%s", PORT);
-});
-
-//USELESS HTTP STUFF
-function handleRequest(request, response){
-    response.end('It Works!! Path Hit: ' + request.url);
-}
-*/
-
-//"SETTINGS": (TOO LAZY TO MAKE A PROPER TXT READER):
+//"SETTINGS": (TOO LAZY TO MAKE A PROPER .TXT READER):
 var UseOriginalCmds = false;
 var funnyMeme = true;
 var EnableAdmins = true;
@@ -59,7 +46,8 @@ function saveAdmins()
 	fs.writeFile("admins.txt", admins.join("\r\n"));
 }
 
-client.on('ready', () => {
+client.on('ready', () => 
+{
 	console.log('I am ready!');
 
 	for (var key in client.voice.connections)
@@ -71,7 +59,8 @@ client.on('ready', () => {
 	}
 });
 
-client.on('message', message => {
+client.on('message', message => 
+{
 	if (message.content.startsWith("!") && message.member.user.username != "Saft Bot" && UseOriginalCmds)
 	{
 		var splitmessage = message.content.split(" ");
@@ -268,29 +257,34 @@ client.on('message', message => {
 	}
 	
 
-	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" && isAdmin(message.member.user.username)) {
+	if (message.content.startsWith("§") && message.member.user.username != "Saft Bot" &&                      isAdmin(message.member.user.username)) 
+        {
 	    splitmessage = message.content.split(" ");
 	    var command = splitmessage[0].toLowerCase();
 	    var args = splitmessage.slice(1, splitmessage.length).join(" ");
 
-	    if (command == "§test") {
+	    if (command == "§test") 
+            {
 	        message.channel.sendMessage("SUCCESS!");
 	    }
 
-	    if (command == "§getname") {
+	    if (command == "§getname")
+            {
 	        message.channel.sendMessage(message.member.user.username);
 	    }
 
-	    if (command == "§isonly") {
-	        if (message.member.voiceChannel == null) {
+	    if (command == "§isonly") 
+            {
+	        if (message.member.voiceChannel == null)
+                {
 	            message.channel.sendMessage("Only- Is only Error, y u heff to not join voicechannel");
 	            return;
 	        }
 
-	        //message.channel.sendMessage(splitmessage[1] + "? I don't get it");
-
-	        if (args == null || args == "game" || args == "gem") {
-	            message.member.voiceChannel.join().then(connection => {
+	        if (args == null || args == "game" || args == "gem") 
+                {
+	            message.member.voiceChannel.join().then(connection => 
+                    {
 	                var dispatcher = connection.playFile("mad(full).mp3");
 
 	                currentDispatcher = dispatcher;
@@ -305,49 +299,44 @@ client.on('message', message => {
 	            });
 	            message.channel.sendMessage("Only- Is only gem, y u heff to be mad");
 	        }
-	        else {
+	        else 
+                {
 	            message.channel.sendMessage("This function is still WIP, sorry");
-	            message.member.voiceChannel.join().then(connection => {
+	            message.member.voiceChannel.join().then(connection => 
+                    {
 	                var dispatcher = connection.playFile("mad(1).mp3");
 
 	                currentDispatcher = dispatcher;
 
 	                dispatcher.setVolume(volume);
 
-	                dispatcher.on("end", () => {
-	                    /* var msg = new SpeechSynthesisUtterance(args);
-
-	                    var dispatcher = null;
-
-	                    var msg = new SpeechSynthesisUtterance('Hello World');
-	                    window.speechSynthesis.speak(msg);
-
-	                    currentDispatcher = dispatcher;
-
-	                    dispatcher.setVolume(volume);
-
-	                    dispatcher.on("end", () => { */
+	                dispatcher.on("end", () => 
+                        {
+	                    /* 
+                                 TTS STUFF GOES HERE
+                            */
 	                        var dispatcher = connection.playFile("mad(2).mp3");
 
 	                        currentDispatcher = dispatcher;
 
 	                        dispatcher.setVolume(volume);
 
-	                        dispatcher.on("end", () => {
+	                        dispatcher.on("end", () => 
+                                {
 	                            connection.disconnect();
 
 	                            currentDispatcher = null;
 	                        });
 	                    });
 	                });
-	            //});
-	            message.channel.sendMessage("this is test");
+	            
 	            message.channel.sendMessage("only- It's only "+args+" y u heff to be mad?");
 
 	        }
 	    }
 
-	    if (command == "§square") {
+	    if (command == "§square") 
+            {
 	        message.delete();
 	        var toSend = args;
 	        var a = 1;
@@ -359,7 +348,10 @@ client.on('message', message => {
 	        message.channel.sendMessage(toSend);
 	    }
 
-        if (command == "§mute"){}
+        if (command == "§mute")
+        {
+            //code needed here
+        }
 	}
 	
 });
